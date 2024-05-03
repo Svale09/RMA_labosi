@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438556392136",
+    "project_id": "rma-labosi-ddcce",
+    "storage_bucket": "rma-labosi-ddcce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438556392136:android:929b7cb77b60da6e0dc3fd",
+        "android_client_info": {
+          "package_name": "rma.lv1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNR_EQn8n4OZtLyeylHwil1_YxIwcpwvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
