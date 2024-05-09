@@ -32,7 +32,7 @@ fun StepCounter(navController: NavController) {
                 .align(Alignment.BottomStart)
                 .padding(16.dp)
         ) {
-            Text("User Info")
+            Text("BMI Screen")
         }
     }
 }

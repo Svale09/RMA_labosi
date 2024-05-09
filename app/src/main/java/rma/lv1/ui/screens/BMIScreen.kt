@@ -25,18 +25,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import rma.lv1.R
 
 @Composable
-fun BMIScreen(name: String, visina: Float, tezina: Float, modifier: Modifier = Modifier) {
+fun BMIScreen(
+    name: String,
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
 
 
-    var bmi = tezina / (visina * visina);
     var formattedBMI by rememberSaveable { mutableStateOf("") }
     var weight by remember { mutableStateOf(0f) }
     var height by remember { mutableStateOf(0f) }
+    var bmi = weight / (height * height);
 
     val db = Firebase.firestore
 
@@ -45,73 +50,92 @@ fun BMIScreen(name: String, visina: Float, tezina: Float, modifier: Modifier = M
         "weight" to weight
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Pozdrav $name!",
-            fontSize = 20.sp,
-            lineHeight = 56.sp,
-            modifier= Modifier
-                .padding(top = 8.dp)
-                .padding(start = 10.dp)
+    Box(modifier = Modifier.fillMaxSize()) {
 
-        )
+        BackgroundImage(modifier = Modifier.fillMaxSize())
 
         Column(
+            modifier = Modifier.align(Alignment.Center),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Tvoj BMI je:",
-                fontSize = 55.sp,
-                lineHeight = 61.sp,
-                textAlign = TextAlign.Center,
+                text = "Pozdrav $name!",
+                fontSize = 20.sp,
+                lineHeight = 56.sp,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .padding(start = 10.dp)
+
+            )
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+            ) {
+                Text(
+                    text = "Tvoj BMI je:",
+                    fontSize = 55.sp,
+                    lineHeight = 61.sp,
+                    textAlign = TextAlign.Center,
 
 
+                    )
+                Text(
+                    text = formattedBMI,
+                    fontSize = 70.sp,
+                    lineHeight = 72.sp,
+                    fontWeight = FontWeight.Bold,
                 )
-            Text(
-                text = formattedBMI,
-                fontSize = 70.sp,
-                lineHeight = 72.sp,
-                fontWeight = FontWeight.Bold,
+                TextField(
+                    value = weight.toString(),
+                    onValueChange = { weight = it.toFloatOrNull() ?: 0f },
+                    label = { Text("Nova Tezina:") },
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                )
+                TextField(
+                    value = height.toString(),
+                    onValueChange = { height = it.toFloatOrNull() ?: 0f },
+                    label = { Text("Nova visina:") },
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                )
+                Button(
+                    onClick = {
+                        bmi = CalculateBMI(weight, height);
+                        formattedBMI = "%.2f".format(bmi)
+                        db.collection("rma_lv").document("BMI_lv2")
+                            .update(user.toMap())
+                            .addOnSuccessListener {
+                                Log.d("Firestore", "DocumentSnapshot successfully updated!")
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("Firestore", "Error updating document", e)
+                            }
+                    },
+                    content = {
+                        Text(text = "Izračunaj BMI")
+                    }
+                )
+            }
+        }
+        Button(
+            onClick = { navController.navigate("step_counter") },
+            modifier = Modifier.then(
+                Modifier.align(Alignment.BottomEnd)
+                    .padding(16.dp)
             )
-            TextField(
-                value = weight.toString(),
-                onValueChange = { weight = it.toFloatOrNull() ?: 0f },
-                label = { Text("Nova Tezina:") },
-                modifier = Modifier.fillMaxWidth(0.8f)
-            )
-            TextField(
-                value = height.toString(),
-                onValueChange = { height = it.toFloatOrNull() ?: 0f },
-                label = { Text("Nova visina:") },
-                modifier = Modifier.fillMaxWidth(0.8f)
-            )
-            Button(
-                onClick = {
-                    bmi = CalculateBMI(weight, height);
-                    formattedBMI = "%.2f".format(bmi)
-                    db.collection("rma_lv").document("BMI_lv2")
-                        .update(user.toMap())
-                        .addOnSuccessListener {
-                            Log.d("Firestore", "DocumentSnapshot successfully updated!")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("Firestore", "Error updating document", e)
-                        }
-                },
-                content = {
-                    Text(text = "Izračunaj BMI")
-                }
-            )
+        ) {
+            Text(text = "Steps Counter")
         }
     }
 }
 
-fun CalculateBMI(weight: Float, height: Float): Float{
+fun CalculateBMI(weight: Float, height: Float): Float {
     val bmi = weight / (height * height) * 10000;
     return bmi;
 }
+
 @Composable
 fun BackgroundImage(modifier: Modifier) {
     Box(modifier = modifier) {
