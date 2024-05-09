@@ -47,7 +47,7 @@ fun BMIScreen(
 
     val user = hashMapOf(
         "height" to height,
-        "weight" to weight
+        "weight" to weight,
     )
 
     Box(modifier = Modifier.fillMaxSize()) {
