@@ -12,9 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import rma.lv1.mvvm.ui.theme.LV1Theme
 import rma.lv1.mvvm.view.BMICalculatorScreen
 import rma.lv1.mvvm.view.BackgroundImage
+import rma.lv1.mvvm.view.LoginRegisterScreen
 import rma.lv1.mvvm.view.StepCounter
 import rma.lv1.mvvm.viewmodel.BMIViewModel
 
@@ -22,26 +24,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BackgroundImage(modifier = Modifier)
-            val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "bmi_screen") {
-                composable("bmi_screen") {
-                    BMICalculatorScreen(BMIViewModel(), navController)
-                }
-                composable("step_counter") {
-                    StepCounter(navController = navController)
-                }
-        }
-
             LV1Theme {
-                // A surface container using the 'background' color from the theme
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-
                 ) {
-                    NavHost(navController = navController, startDestination = "bmi_screen") {
+                    val navController = rememberNavController()
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = if (currentUser == null) "login_register" else "bmi_screen"
+                    ) {
+                        composable("login_register") {
+                            LoginRegisterScreen(navController = navController)
+                        }
                         composable("bmi_screen") {
                             BMICalculatorScreen(viewModel = BMIViewModel(), navController)
                         }
@@ -55,12 +52,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-
-
 @Preview(showBackground = false)
 @Composable
 fun BMIScreen() {
     LV1Theme {
-        BackgroundImage(modifier = Modifier)   }
+        BackgroundImage(modifier = Modifier.fillMaxSize())
+    }
 }

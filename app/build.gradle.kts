@@ -74,14 +74,16 @@ dependencies {
 
 
     implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("androidx.fragment:fragment-ktx:1.7.1")
     implementation("io.coil-kt:coil-compose:2.5.0")
 
-    implementation("com.google.firebase:firebase-firestore:24.9.1")
-    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("com.google.firebase:firebase-firestore:25.0.0")
+    implementation("androidx.activity:activity-ktx:1.9.0")
 
     implementation ("androidx.compose.ui:ui:1.6.7")
     implementation ("androidx.compose.material:material:1.6.7")
     implementation ("androidx.activity:activity-compose:1.9.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.1")
+
+    implementation ("com.google.firebase:firebase-auth-ktx:23.0.0")
 }

@@ -9,3 +9,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.googleGmsGoogleServices) apply false
 }
+
+repositories {
+    google()
+}
