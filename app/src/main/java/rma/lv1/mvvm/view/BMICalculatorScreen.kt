@@ -13,22 +13,40 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import rma.lv1.mvvm.viewmodel.AuthViewModel
+import rma.lv1.mvvm.viewmodel.AuthViewModelFactory
 import rma.lv1.mvvm.viewmodel.BMIViewModel
 
 @Composable
 fun BMICalculatorScreen(viewModel: BMIViewModel, navController: NavController) {
+    val context = LocalContext.current
+    val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(context))
+    val authResult by authViewModel.authResult.observeAsState()
+
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
     var bmiResult by remember { mutableStateOf<Float?>(null) }
+
+    LaunchedEffect(authResult) {
+        if (authResult == false) {
+            navController.navigate("login_register") {
+                popUpTo("bmi_screen") { inclusive = true }
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(modifier = Modifier)
@@ -82,6 +100,15 @@ fun BMICalculatorScreen(viewModel: BMIViewModel, navController: NavController) {
                 onClick = { navController.navigate("step_counter") },
             ) {
                 Text(text = "Steps counter")
+            }
+            Button(
+                onClick = { authViewModel.logout() },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .width(150.dp)
+                    .height(50.dp),
+            ) {
+                Text("Logout")
             }
         }
     }

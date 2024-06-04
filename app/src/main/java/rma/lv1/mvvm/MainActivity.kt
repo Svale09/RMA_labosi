@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import rma.lv1.mvvm.ui.theme.LV1Theme
 import rma.lv1.mvvm.view.BMICalculatorScreen
-import rma.lv1.mvvm.view.BackgroundImage
 import rma.lv1.mvvm.view.LoginRegisterScreen
 import rma.lv1.mvvm.view.StepCounter
 import rma.lv1.mvvm.viewmodel.BMIViewModel
@@ -56,6 +55,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BMIScreen() {
     LV1Theme {
-        BackgroundImage(modifier = Modifier.fillMaxSize())
+        // Preview function content
     }
 }
+

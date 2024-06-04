@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import rma.lv1.mvvm.model.AuthModel
 
 class AuthViewModel(context: Context) : ViewModel() {
@@ -21,5 +22,10 @@ class AuthViewModel(context: Context) : ViewModel() {
         authModel.register(email, password) { result ->
             _authResult.value = result
         }
+    }
+
+    fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        _authResult.value = false // This will trigger navigation back to the login screen
     }
 }
