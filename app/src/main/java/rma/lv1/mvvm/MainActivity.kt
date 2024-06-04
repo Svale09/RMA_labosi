@@ -1,4 +1,4 @@
-package rma.lv1
+package rma.lv1.mvvm
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,10 +12,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import rma.lv1.ui.screens.BackgroundImage
-import rma.lv1.ui.theme.LV1Theme
-import rma.lv1.ui.screens.BMIScreen
-import rma.lv1.ui.screens.StepCounter
+import rma.lv1.mvvm.ui.screens.BackgroundImage
+import rma.lv1.mvvm.ui.theme.LV1Theme
+import rma.lv1.mvvm.ui.screens.BMIScreen
+import rma.lv1.mvvm.ui.screens.StepCounter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

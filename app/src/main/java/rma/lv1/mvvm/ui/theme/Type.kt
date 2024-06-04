@@ -1,4 +1,4 @@
-package rma.lv1.ui.theme
+package rma.lv1.mvvm.ui.theme
 
 import android.graphics.Color
 import androidx.compose.material3.Typography
