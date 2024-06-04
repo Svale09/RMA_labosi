@@ -12,10 +12,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import rma.lv1.mvvm.ui.screens.BackgroundImage
 import rma.lv1.mvvm.ui.theme.LV1Theme
-import rma.lv1.mvvm.ui.screens.BMIScreen
-import rma.lv1.mvvm.ui.screens.StepCounter
+import rma.lv1.mvvm.view.BMICalculatorScreen
+import rma.lv1.mvvm.view.BackgroundImage
+import rma.lv1.mvvm.view.StepCounter
+import rma.lv1.mvvm.viewmodel.BMIViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "bmi_screen") {
                 composable("bmi_screen") {
-                    BMIScreen(name = "Ivan Svalina", navController = navController)
+                    BMICalculatorScreen(BMIViewModel())
                 }
                 composable("step_counter") {
                     StepCounter(navController = navController)
@@ -41,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(navController = navController, startDestination = "bmi_screen") {
                         composable("bmi_screen") {
-                            BMIScreen(name = "Ivan Svalina", navController = navController)
+                            BMICalculatorScreen(viewModel = BMIViewModel())
                         }
                         composable("step_counter") {
                             StepCounter(navController = navController)
