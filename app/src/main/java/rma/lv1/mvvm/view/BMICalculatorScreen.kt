@@ -1,10 +1,13 @@
 package rma.lv1.mvvm.view
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -18,48 +21,68 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import rma.lv1.mvvm.viewmodel.BMIViewModel
 
 @Composable
-fun BMICalculatorScreen(viewModel: BMIViewModel) {
+fun BMICalculatorScreen(viewModel: BMIViewModel, navController: NavController) {
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
     var bmiResult by remember { mutableStateOf<Float?>(null) }
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        OutlinedTextField(
-            value = weight,
-            onValueChange = { weight = it },
-            label = { Text("Weight (kg)") },
-            keyboardOptions = KeyboardOptions(keyboardType =
-            KeyboardType.Number)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = height,
-            onValueChange = { height = it },
-            label = { Text("Height (cm)") },
-            keyboardOptions = KeyboardOptions(keyboardType =
-            KeyboardType.Number)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = {
-                // Izracun preko viewmodela
-                bmiResult = viewModel.calculateBMI(weight.toFloatOrNull(),
-                    height.toFloatOrNull())
-            }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        BackgroundImage(modifier = Modifier)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Calculate BMI")
+            OutlinedTextField(
+                value = weight,
+                onValueChange = { weight = it },
+                label = { Text("Weight (kg)") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType =
+                    KeyboardType.Number
+                )
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = height,
+                onValueChange = { height = it },
+                label = { Text("Height (cm)") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType =
+                    KeyboardType.Number
+                )
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    // Izracun preko viewmodela
+                    bmiResult = viewModel.calculateBMI(
+                        weight.toFloatOrNull(),
+                        height.toFloatOrNull()
+                    )
+                }
+            ) {
+                Text("Calculate BMI")
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            // Display BMI result
+            Text(
+                text = "Your BMI: ${bmiResult?.toString() ?: "N/A"}",
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Button(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .width(150.dp)
+                    .height(50.dp),
+                onClick = { navController.navigate("step_counter") },
+            ) {
+                Text(text = "Steps counter")
+            }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        // Display BMI result
-        Text(
-            text = "Your BMI: ${bmiResult?.toString() ?: "N/A"}",
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
     }
 }

@@ -22,10 +22,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            BackgroundImage(modifier = Modifier)
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "bmi_screen") {
                 composable("bmi_screen") {
-                    BMICalculatorScreen(BMIViewModel())
+                    BMICalculatorScreen(BMIViewModel(), navController)
                 }
                 composable("step_counter") {
                     StepCounter(navController = navController)
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(navController = navController, startDestination = "bmi_screen") {
                         composable("bmi_screen") {
-                            BMICalculatorScreen(viewModel = BMIViewModel())
+                            BMICalculatorScreen(viewModel = BMIViewModel(), navController)
                         }
                         composable("step_counter") {
                             StepCounter(navController = navController)
